@@ -243,4 +243,8 @@ public class GameState implements GameStateInterface, Constants {
     public int getEdibleGhostScore() {
         return edibleGhostScore;
     }
+    
+    public void setLastLife(){
+    	this.nLivesRemaining = 1;
+    }
 }

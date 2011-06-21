@@ -20,4 +20,6 @@ public interface GameStateInterface {
     boolean MsPacManDeath();
     boolean terminal();
     void reset();
+    
+    public void setLastLife();
 }

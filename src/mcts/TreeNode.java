@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import controllers.examples.LegacyTeam;
+import controllers.examples.RandomMsPacMan;
 import controllers.examples.RandomNonReverseMsPacMan;
 
 import core.Game;
@@ -90,7 +91,9 @@ public class TreeNode {
     }
     
 	public int simulateGame(GameStateInterface gs){
-		Game game = new Game(gs.copy(), null, new RandomNonReverseMsPacMan(), new LegacyTeam());
+		GameStateInterface simGs = gs.copy();
+	//	simGs.setLastLife();
+		Game game = new Game(simGs, null, new RandomMsPacMan(), new LegacyTeam());
 		try {
 			return game.run(0);
 		} catch (Exception e) {
@@ -100,8 +103,7 @@ public class TreeNode {
 	}
 
     public void updateStats(double value) {
-        nVisits++;
-        totValue += value;
+    	totValue = (totValue*nVisits + value)/++nVisits;
     }
 
     public int arity() {

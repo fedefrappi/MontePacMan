@@ -1,5 +1,7 @@
 package competition;
 
+import java.util.ArrayList;
+
 import mcts.TreeNode;
 import core.GameStateInterface;
 import core.Node;
@@ -11,9 +13,20 @@ public class MCTSMsPacmanController implements MsPacManController {
 	
 	@Override
 	public int getAction(GameStateInterface gs) {
+    	ArrayList<Node> possibles = new ArrayList<Node>();
+        for (Node n : gs.getPacman().current.adj) {
+            if (!n.equals(prev)){
+            	possibles.add(n);
+            }
+        }
+        if (possibles.size()==1){
+    		prev = gs.getPacman().current;
+        	return Utilities.getWrappedDirection(gs.getPacman().current, possibles.get(0), gs.getMaze());
+        }
+        
 		TreeNode root = new TreeNode(gs, prev);
 		prev = gs.getPacman().current;
-		int n = 20;
+		int n = 100;
         for (int i=0; i<n; i++) {
             root.selectAction();
         }
@@ -28,7 +41,7 @@ public class MCTSMsPacmanController implements MsPacManController {
         		maxInt = i; 
         	}
         }
-  //      System.out.println(max);
+  //    System.out.println(max);
         
 		return Utilities.getWrappedDirection(gs.getPacman().current, children[maxInt].gameState.getPacman().current, gs.getMaze());
 	}
