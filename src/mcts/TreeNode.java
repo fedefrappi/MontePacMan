@@ -24,6 +24,8 @@ public class TreeNode {
     public double nVisits, totValue;
     public GameStateInterface gameState;
     
+    private static double C = 5000;
+    
     public TreeNode(GameStateInterface gs, Node prevNode) {
 		this.gameState = gs.copy();
 		this.prev = prevNode;
@@ -69,12 +71,16 @@ public class TreeNode {
         TreeNode selected = null;
         double bestValue = Double.MIN_VALUE;
         for (TreeNode c : children) {
+        	/*
             double uctValue =
                     c.totValue / (c.nVisits + epsilon) +
                             Math.sqrt(Math.log(nVisits+1) / (c.nVisits + epsilon)) +
                             r.nextDouble() * epsilon;
             // small random number to break ties randomly in unexpanded nodes
             // System.out.println("UCT value = " + uctValue);
+             * 
+             */
+        	double uctValue = c.totValue + C*Math.sqrt(Math.log(nVisits+1)/(c.nVisits+epsilon)) + r.nextDouble()*epsilon;
             if (uctValue > bestValue) {
                 selected = c;
                 bestValue = uctValue;
