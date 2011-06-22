@@ -8,6 +8,7 @@ import java.util.Random;
 import controllers.examples.LegacyTeam;
 import controllers.examples.RandomMsPacMan;
 import controllers.examples.RandomNonReverseMsPacMan;
+import controllers.examples.RandomSemiNonReverseMsPacMan;
 
 import core.Game;
 import core.GameStateInterface;
@@ -49,7 +50,7 @@ public class TreeNode {
     	
     	ArrayList<Node> possibles = new ArrayList<Node>();
         for (Node n : gameState.getPacman().current.adj) {
-            if (!n.equals(prev)){
+           if (!n.equals(prev)){
             	possibles.add(n);
             }
         }
@@ -93,7 +94,7 @@ public class TreeNode {
 	public int simulateGame(GameStateInterface gs){
 		GameStateInterface simGs = gs.copy();
 	//	simGs.setLastLife();
-		Game game = new Game(simGs, null, new RandomMsPacMan(), new LegacyTeam());
+		Game game = new Game(simGs, null, new RandomSemiNonReverseMsPacMan(), new LegacyTeam());
 		try {
 			return game.run(0);
 		} catch (Exception e) {
