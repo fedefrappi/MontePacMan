@@ -15,10 +15,12 @@ public class Main implements Constants {
     private static final boolean async = false;
 
     public static void main(String[] args) throws Exception {
-    	long iter = 2;
+    	long iter = 100;
     	long total = 0;
     	long max = 0;
+    	long total2 = 0;
     	for (int i = 0; i < iter; i++) {
+    		System.out.println((i+1)+"/"+iter);
 	    	MsPacManController mspacman = new MCTSMsPacman();
 	    	
 	        GhostsController ghosts = new LegacyTeam();
@@ -28,13 +30,16 @@ public class Main implements Constants {
 	        } else {
 	        	long currentScore = runDark(mspacman, ghosts, async);
 	        	total += currentScore;
+	        	total2 += currentScore*currentScore;
 	        	if(currentScore > max){
 	        		max = currentScore;
 	        	}
 	    	}
     	}
+    	double devstd = Math.sqrt(iter*total2 - (total*total))/(double)iter;
     	System.out.println("---------------------------------");
     	System.out.println("Mean score: " + total/iter);
+    	System.out.println("Std dev: " + devstd);
     	System.out.println("Max score: " + max);
     }
 
