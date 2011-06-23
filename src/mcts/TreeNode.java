@@ -1,7 +1,6 @@
 package mcts;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,15 +23,19 @@ public class TreeNode {
     public double nVisits, totValue;
     public GameStateInterface gameState;
     
+    public static LegacyTeam ghosts = new LegacyTeam();
+    
+    private static int maxSimulationTicks = 0;
     private static double C = 5000;
+    private static boolean simulateJustLastLife = false;
     
     public TreeNode(GameStateInterface gs, Node prevNode) {
-		this.gameState = gs.copy();
+		this.gameState = gs;
 		this.prev = prevNode;
 	}
 
     public void selectAction() {
-        List<TreeNode> visited = new LinkedList<TreeNode>();
+        List<TreeNode> visited = new ArrayList<TreeNode>();
         TreeNode cur = this;
         visited.add(this);
         while (!cur.isLeaf()) {
@@ -50,19 +53,20 @@ public class TreeNode {
 
     public void expand() {
     	
-    	ArrayList<Node> possibles = new ArrayList<Node>();
+    	Node[] possibles = new Node[4];
+    	int possCount = 0;
         for (Node n : gameState.getPacman().current.adj) {
            if (!n.equals(prev)){
-            	possibles.add(n);
+            	possibles[possCount++] = n;
             }
         }
     	
-    	int nActions = possibles.size();
+    	int nActions = possCount;
         children = new TreeNode[nActions];
         for (int i=0; i<nActions; i++) {
-        	Node target = possibles.get(i);
+        	Node target = possibles[i];
         	GameStateInterface nextGs = gameState.copy();
-        	nextGs.next(Utilities.getWrappedDirection(gameState.getPacman().current, target, gameState.getMaze()), new LegacyTeam().getActions(gameState));
+        	nextGs.next(Utilities.getWrappedDirection(gameState.getPacman().current, target, gameState.getMaze()), ghosts.getActions(gameState));
             children[i] = new TreeNode(nextGs, gameState.getPacman().current);
         }
     }
@@ -99,10 +103,12 @@ public class TreeNode {
     
 	public int simulateGame(GameStateInterface gs){
 		GameStateInterface simGs = gs.copy();
-	//	simGs.setLastLife();
-		Game game = new Game(simGs, null, new RandomSemiNonReverseMsPacMan(), new LegacyTeam());
+		if (simulateJustLastLife) {
+			simGs.setLastLife();			
+		}
+		Game game = new Game(simGs, null, new RandomNonReverseMsPacMan(), ghosts);
 		try {
-			return game.run(0);
+			return game.run(0, maxSimulationTicks);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

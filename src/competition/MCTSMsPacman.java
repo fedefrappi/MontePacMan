@@ -9,7 +9,8 @@ import core.utilities.Utilities;
 
 public class MCTSMsPacman implements MsPacManController {
 	
-	Node prev;
+	private Node prev;
+	private static int numberOfSimulations = 1000;
 	
 	@Override
 	public int getAction(GameStateInterface gs) {
@@ -25,20 +26,21 @@ public class MCTSMsPacman implements MsPacManController {
         	return Utilities.getWrappedDirection(gs.getPacman().current, possibles.get(0), gs.getMaze());
         }
 		
-		TreeNode root = new TreeNode(gs, prev);
+		TreeNode root = new TreeNode(gs.copy(), prev);
 		prev = gs.getPacman().current;
-		int n = 500;
-        for (int i=0; i<n; i++) {
+		long startTime = System.currentTimeMillis();
+        for (int i=0; i<numberOfSimulations; i++) {
             root.selectAction();
         }
+        System.out.println("Mean simulation time: " + (System.currentTimeMillis() - startTime) + " ms");
         
         TreeNode[] children = root.children;
         
         double max = Double.MIN_VALUE;
         int maxInt = 0;
         for (int i=0; i<children.length; i++){
-        	if(children[i].totValue>max){
-        		max = children[i].totValue;
+        	if(children[i].nVisits>max){
+        		max = children[i].nVisits;
         		maxInt = i; 
         	}
         }
