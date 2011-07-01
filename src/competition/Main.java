@@ -21,7 +21,7 @@ public class Main implements Constants {
     	long total2 = 0;
     	for (int i = 0; i < iter; i++) {
     		System.out.println((i+1)+"/"+iter);
-	    	MsPacManController mspacman = new MCTSMsPacman();
+	    	MCTSMsPacman mspacman = new MCTSMsPacman();
 	    	
 	        GhostsController ghosts = new LegacyTeam();
 	
@@ -35,6 +35,9 @@ public class Main implements Constants {
 	        		max = currentScore;
 	        	}
 	    	}
+	        
+	        System.out.println("Mean simulation time : " + (mspacman.totalTime/mspacman.numberOfMoves) + " ms");
+	        System.out.println("Max simulation time: " + mspacman.maxTime + " ms");
     	}
     	double devstd = Math.sqrt(iter*total2 - (total*total))/(double)iter;
     	System.out.println("---------------------------------");

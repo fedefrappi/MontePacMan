@@ -10,7 +10,10 @@ import core.utilities.Utilities;
 public class MCTSMsPacman implements MsPacManController {
 	
 	private Node prev;
-	private static int numberOfSimulations = 1000;
+	private static int numberOfSimulations = 50;
+	public long totalTime = 0;
+	public int numberOfMoves = 0;
+	public long maxTime = 0;
 	
 	@Override
 	public int getAction(GameStateInterface gs) {
@@ -32,7 +35,13 @@ public class MCTSMsPacman implements MsPacManController {
         for (int i=0; i<numberOfSimulations; i++) {
             root.selectAction();
         }
-        System.out.println("Mean simulation time: " + (System.currentTimeMillis() - startTime) + " ms");
+        //System.out.println("Mean simulation time: " + (System.currentTimeMillis() - startTime) + " ms");
+        long currentTime = (System.currentTimeMillis() - startTime);
+        totalTime += currentTime;
+        if(currentTime > maxTime){
+        	maxTime = currentTime;
+        }
+        numberOfMoves++;
         
         TreeNode[] children = root.children;
         

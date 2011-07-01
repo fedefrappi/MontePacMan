@@ -26,7 +26,7 @@ public class TreeNode {
     public static LegacyTeam ghosts = new LegacyTeam();
     
     private static int maxSimulationTicks = 0;
-    private static double C = 5000;
+    private static double C = 1000;
     private static boolean simulateJustLastLife = false;
     
     public TreeNode(GameStateInterface gs, Node prevNode) {
