@@ -1,5 +1,8 @@
 package competition;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 import controllers.KeyController;
 import controllers.examples.*;
 import core.*;
@@ -15,35 +18,53 @@ public class Main implements Constants {
     private static final boolean async = false;
 
     public static void main(String[] args) throws Exception {
-    	long iter = 100;
-    	long total = 0;
-    	long max = 0;
-    	long total2 = 0;
-    	for (int i = 0; i < iter; i++) {
-    		System.out.println((i+1)+"/"+iter);
-	    	MCTSMsPacman mspacman = new MCTSMsPacman();
-	    	
-	        GhostsController ghosts = new LegacyTeam();
-	
-	        if (visual) {
-	            runVisual(mspacman, ghosts, async);
-	        } else {
-	        	long currentScore = runDark(mspacman, ghosts, async);
-	        	total += currentScore;
-	        	total2 += currentScore*currentScore;
-	        	if(currentScore > max){
-	        		max = currentScore;
-	        	}
-	    	}
-	        
-	        System.out.println("Mean simulation time : " + (mspacman.totalTime/mspacman.numberOfMoves) + " ms");
-	        System.out.println("Max simulation time: " + mspacman.maxTime + " ms");
+    	long iter = 12;
+ //   	long total = 0;
+ //   	long max = 0;
+ //   	long total2 = 0;
+    	
+    	FileWriter fw = new FileWriter("out.txt");
+    	BufferedWriter bw = new BufferedWriter(fw);
+    	try{
+    		int[] sims = {50,75,100,250,500};
+        	for (int sim=0; sim<sims.length; sim++){
+        		
+        		bw.write("-------------------------\n");
+        		bw.write(sims[sim] + " Simulations\n");
+        		
+        		for (int i = 0; i < iter; i++) {
+        			bw.write((i+1)+"/"+iter + "\n");
+        			MCTSMsPacman mspacman = new MCTSMsPacman();
+        			
+        			GhostsController ghosts = new LegacyTeam();
+        			
+        			if (visual) {
+        				runVisual(mspacman, ghosts, async);
+        			} else {
+        				long currentScore = runDark(mspacman, ghosts, async);
+     //   				total += currentScore;
+     //   				total2 += currentScore*currentScore;
+     //   				if(currentScore > max){
+     //   					max = currentScore;
+     //   				}
+        			}
+        			
+        			bw.write("Mean simulation time : " + (mspacman.totalTime/mspacman.numberOfMoves) + " ms\n");
+        			bw.write("Max simulation time: " + mspacman.maxTime + " ms\n");
+        		}    		
+        	}
+        	bw.close();
+    	} catch (Exception e) {
+
     	}
+    	
+    	    	/*
     	double devstd = Math.sqrt(iter*total2 - (total*total))/(double)iter;
     	System.out.println("---------------------------------");
     	System.out.println("Mean score: " + total/iter);
     	System.out.println("Std dev: " + devstd);
     	System.out.println("Max score: " + max);
+    	*/
     }
 
     public static int runDark(MsPacManController mspacman, GhostsController ghosts, boolean async) throws Exception {

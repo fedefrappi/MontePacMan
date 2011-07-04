@@ -10,7 +10,7 @@ import core.utilities.Utilities;
 public class MCTSMsPacman implements MsPacManController {
 	
 	private Node prev;
-	private static int numberOfSimulations = 50;
+	private static int numberOfSimulations = 500;
 	public long totalTime = 0;
 	public int numberOfMoves = 0;
 	public long maxTime = 0;

@@ -1,0 +1,25 @@
+-------------------------
+50 Simulations
+1/1
+Mean simulation time : 338 ms
+Max simulation time: 867 ms
+-------------------------
+75 Simulations
+1/1
+Mean simulation time : 346 ms
+Max simulation time: 684 ms
+-------------------------
+100 Simulations
+1/1
+Mean simulation time : 413 ms
+Max simulation time: 683 ms
+-------------------------
+250 Simulations
+1/1
+Mean simulation time : 401 ms
+Max simulation time: 591 ms
+-------------------------
+500 Simulations
+1/1
+Mean simulation time : 359 ms
+Max simulation time: 601 ms
